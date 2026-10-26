@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account | AU THE STANDARD</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .account-wrap {
+      max-width: 460px;
+      margin: 60px auto;
+      padding: 28px;
+      background: #fff;
+      color: #052f30;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.12);
+    }
+    .account-wrap h1 { margin-top: 0; }
+    .account-wrap label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: 600;
+    }
+    .account-wrap input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #b8ceca;
+      border-radius: 8px;
+      font: inherit;
+    }
+    .account-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .account-actions button {
+      flex: 1;
+      padding: 12px;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      background: #087c78;
+      color: white;
+    }
+    #account-message {
+      margin-top: 16px;
+      overflow-wrap: anywhere;
+    }
+    .account-back { color: #087c78; }
+  </style>
+</head>
+<body>
+  <main class="account-wrap">
+    <a class="account-back" href="index.html">← Back to homepage</a>
+    <h1>Reader Account</h1>
+    <p>Sign in or register to join the AU THE STANDARD community.</p>
+
+    <form id="account-form">
+      <label for="account-email">Email address</label>
+      <input id="account-email" type="email" autocomplete="email"
+        required>
+
+      <label for="account-password">Password</label>
+      <input id="account-password" type="password"
+        autocomplete="current-password" minlength="8" required>
+
+      <div class="account-actions">
+        <button type="button" id="register-button">Register</button>
+        <button type="submit">Log in</button>
+      </div>
+    </form>
+
+    <p id="account-message" role="status" aria-live="polite"></p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="account.js"></script>
+</body>
+</html>
