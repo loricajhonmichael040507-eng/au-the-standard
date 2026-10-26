@@ -1,0 +1,2227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | AU THE STANDARD</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    :root {
+      --teal: #052f30;
+      --green: #087c78;
+      --yellow: #f1d85b;
+      --cream: #f6f7f2;
+      --ink: #152e2c;
+      --muted: #6b7e79;
+      --border: #dce6e0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Montserrat", sans-serif;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .admin-header {
+      padding: 24px;
+      color: white;
+      background: linear-gradient(125deg, var(--teal), var(--green));
+      border-bottom: 4px solid var(--yellow);
+    }
+
+    .admin-header-inner {
+      width: min(1180px, 100%);
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .admin-brand {
+      color: white;
+      font-size: clamp(20px, 4vw, 30px);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .admin-brand span { color: var(--yellow); }
+
+    .admin-subtitle {
+      margin-top: 7px;
+      color: #d5e8e2;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+    }
+
+    .header-actions, .button-row, .item-actions, .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .admin-main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 30px auto 70px;
+    }
+
+    .panel {
+      margin-bottom: 24px;
+      padding: clamp(20px, 4vw, 32px);
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 28px rgba(5, 47, 48, .045);
+    }
+
+    .panel h1, .panel h2, .panel h3 {
+      color: var(--teal);
+    }
+
+    .panel h1 {
+      margin: 0 0 10px;
+      font-size: clamp(24px, 4vw, 34px);
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .field { margin-top: 19px; }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .field input, .field select, .field textarea {
+      display: block;
+      width: 100%;
+      min-height: 45px;
+      padding: 12px 13px;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid #cbd9d3;
+      border-radius: 7px;
+      outline: none;
+    }
+
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(8, 124, 120, .1);
+    }
+
+    .field textarea {
+      min-height: 130px;
+      resize: vertical;
+      line-height: 1.8;
+    }
+
+    .field small {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .form-grid, .stats-grid, .monitor-grid, .top-story-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 20px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #fbfcfa;
+    }
+
+    .stat-number {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--green);
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 11px 17px;
+      color: white;
+      background: var(--green);
+      border: 1px solid var(--green);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+
+    .btn:hover { opacity: .86; }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .btn-dark {
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+
+    .btn-light {
+      color: var(--teal);
+      background: white;
+      border-color: #cbd9d3;
+    }
+
+    .btn-danger {
+      color: white;
+      background: #a83232;
+      border-color: #a83232;
+    }
+
+    .button-row { margin-top: 24px; }
+
+    .status-message {
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: 7px;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .status-message:empty { display: none; }
+
+    .status-success { color: #145b38; background: #e7f5eb; }
+    .status-error { color: #8b2222; background: #fff0f0; }
+    .status-info { color: #185a60; background: #eaf5f5; }
+
+    .image-preview {
+      width: min(100%, 420px);
+      max-height: 260px;
+      margin-top: 12px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .image-preview[hidden], [hidden] { display: none !important; }
+
+    .dashboard-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .status-pill {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 5px 8px;
+      color: var(--teal);
+      background: #e7efeb;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .status-pill.published, .status-pill.active {
+      color: #17633b;
+      background: #e7f5eb;
+    }
+
+    .status-pill.draft, .status-pill.inactive {
+      color: #775b00;
+      background: #fff4ce;
+    }
+
+    .article-list, .management-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .article-item, .management-item {
+      display: grid;
+      grid-template-columns: 100px minmax(0, 1fr);
+      gap: 16px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+    }
+
+    .article-thumb {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      background: #e4ece7;
+      border-radius: 6px;
+    }
+
+    .article-item h3, .management-item h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .article-item p, .management-item p {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .item-actions { margin-top: 12px; }
+
+    .item-actions .btn {
+      min-height: 34px;
+      padding: 8px 11px;
+      font-size: 11px;
+    }
+
+    .tabs { margin: 0 0 22px; }
+
+    .tab-button {
+      padding: 10px 14px;
+      color: var(--teal);
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tab-button.active {
+      color: white;
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+
+    .top-story-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #fbfcfa;
+    }
+
+    .top-story-card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .top-story-card .field { margin-top: 12px; }
+
+    .monitor-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .monitor-card h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+
+    .monitor-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .admin-footer {
+      padding: 25px;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media (max-width: 650px) {
+      .admin-header { padding: 20px 16px; }
+      .admin-header-inner { align-items: flex-start; flex-direction: column; }
+      .admin-main { margin-top: 20px; }
+      .form-grid, .stats-grid, .monitor-grid, .top-story-grid {
+        grid-template-columns: 1fr;
+      }
+      .article-item, .management-item {
+        grid-template-columns: 76px minmax(0, 1fr);
+        gap: 12px;
+        padding: 12px;
+      }
+      .article-thumb { width: 76px; height: 80px; }
+      .panel { padding: 20px 16px; }
+      .button-row .btn { flex: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div>
+        <a class="admin-brand" href="index.html">AU <span>THE STANDARD</span></a>
+        <div class="admin-subtitle">PUBLICATION MANAGEMENT SYSTEM</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn btn-light" href="index.html">View Website ↗</a>
+        <button class="btn btn-dark" id="logout-button" type="button" hidden>Log Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <section class="panel" id="login-panel">
+      <h1>Editor Login</h1>
+      <p class="muted">Sign in using your authorized publication account.</p>
+     <form id="login-form">
+  <div class="field">
+    <label for="login-email">Email address</label>
+    <input
+      id="login-email"
+      name="email"
+      type="email"
+      autocomplete="username"
+      required
+    >
+  </div>
+
+  <div class="field">
+    <label for="login-password">Password</label>
+    <input
+      id="login-password"
+      name="password"
+      type="password"
+      autocomplete="current-password"
+      required
+    >
+  </div>
+
+  <div class="button-row">
+    <button class="btn" id="login-button" type="submit">
+      Log In with Email
+    </button>
+  </div>
+
+  <div class="nfc-login-option">
+    <p class="muted">— OR SCAN YOUR CARD —</p>
+
+    <button class="btn" id="nfc-scan-button" type="button">
+      Scan NFC Card
+    </button>
+
+    <p
+      id="nfc-login-message"
+      class="status-message"
+      role="status"
+      aria-live="polite"
+    ></p>
+  </div>
+
+  <div
+    id="login-message"
+    class="status-message"
+    role="status"
+    aria-live="polite"
+  ></div>
+</form>
+    </section>
+
+    <section id="dashboard-panel" hidden>
+      <section class="panel">
+        <div class="dashboard-bar">
+          <div>
+            <h1>Publication Dashboard</h1>
+            <p class="muted">Manage stories, monthly highlights, announcements, and content coverage.</p>
+          </div>
+          <div>
+            <span class="status-pill" id="role-label">Checking role…</span>
+            <div class="muted" id="user-email"></div>
+          </div>
+        </div>
+        <div id="dashboard-message" class="status-message" role="status" aria-live="polite"></div>
+        <div id="dashboard-stats" class="stats-grid"></div>
+      </section>
+
+      <nav class="tabs" aria-label="Dashboard sections">
+        <button class="tab-button active" data-tab="articles-section" type="button">Articles</button>
+        <button class="tab-button" data-tab="top-stories-section" type="button">Top Stories</button>
+        <button class="tab-button" data-tab="announcements-section" type="button">Announcements</button>
+        <button class="tab-button" data-tab="monitoring-section" type="button">Category Monitoring</button>
+        
+<button class="tab-button" data-tab="members-section" type="button">
+  Membership Approval
+</button>
+
+      </nav>
+
+      <section class="dashboard-section" id="articles-section">
+        <section class="panel" id="editor-panel">
+          <h2 id="editor-heading">Create an Article</h2>
+          <p class="muted">Save a draft while writing or publish your finished article.</p>
+
+          <form id="article-form">
+            <div class="field">
+              <label for="article-title">Article headline *</label>
+              <input id="article-title" name="title" maxlength="250" required>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="article-category">Main category *</label>
+                <select id="article-category" name="category" required>
+                  <option value="News">News</option>
+                  <option value="Features">Features</option>
+                  <option value="Opinion">Opinion</option>
+                  <option value="Sports">Sports</option>
+                  <option value="Multimedia">Multimedia</option>
+                  <option value="Literary">Literary</option>
+                  <option value="Science & Technology">Science & Technology</option>
+                  <option value="Campus News">Campus News (legacy)</option>
+                  <option value="Community">Community (legacy)</option>
+                  <option value="Science and Technology">Science and Technology (legacy)</option>
+                </select>
+                <small>Choose the main section where the story belongs.</small>
+              </div>
+
+              <div class="field">
+                <label for="article-subcategory">Subcategory</label>
+                <select id="article-subcategory" name="subcategory">
+                  <option value="">Choose a subcategory</option>
+                </select>
+              </div>
+
+              <div class="field" id="coverage-field">
+                <label for="article-coverage">News coverage level</label>
+                <select id="article-coverage" name="coverage_level">
+                  <option value="">Not specified</option>
+                  <option value="Local">Local</option>
+                  <option value="National">National</option>
+                  <option value="International">International</option>
+                </select>
+                <small>Use this field for News coverage. It is separate from the subcategory.</small>
+              </div>
+
+              <div class="field">
+                <label for="article-author">Author or byline *</label>
+                <input id="article-author" name="author" maxlength="150" required placeholder="e.g. Jhon Michael Lorica">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="article-image">Cover image</label>
+              <input id="article-image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+              <small>JPG, PNG, WEBP, or GIF. Maximum 5 MB.</small>
+              <p class="muted" id="image-status">Choose an image for your article cover.</p>
+              <img id="image-preview" class="image-preview" alt="Article cover preview" hidden>
+            </div>
+
+            <div class="field">
+              <label for="article-excerpt">Short summary *</label>
+              <textarea id="article-excerpt" name="excerpt" rows="3" maxlength="600" required placeholder="A short introduction shown on the homepage."></textarea>
+            </div>
+
+            <div class="field">
+              <label for="article-content">Full article *</label>
+              <textarea id="article-content" name="content" rows="12" required placeholder="Write the full article here. Leave a blank line between paragraphs."></textarea>
+              <small>Separate paragraphs with a blank line.</small>
+            </div>
+
+            <div class="button-row">
+              <button class="btn btn-dark" id="save-draft-button" type="button">Save Draft</button>
+              <button class="btn" id="publish-button" type="button">Publish Article</button>
+              <button class="btn btn-light" id="reset-button" type="button">Clear Form</button>
+            </div>
+            <div id="form-message" class="status-message" role="status" aria-live="polite"></div>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="dashboard-bar">
+            <div>
+              <h2>Manage Articles</h2>
+              <p class="muted">Edit, review, and delete existing stories.</p>
+            </div>
+            <button class="btn btn-light" id="refresh-button" type="button">Refresh List ↻</button>
+          </div>
+          <div id="article-list-message" class="status-message" role="status" aria-live="polite"></div>
+          <div id="article-list" class="article-list">
+            <p class="muted">Loading articles…</p>
+          </div>
+        </section>
+      </section>
+
+      <section class="dashboard-section" id="top-stories-section" hidden>
+        <section class="panel">
+          <h2>Monthly Top Stories</h2>
+          <p class="muted">Choose up to three published articles to feature in the homepage sidebar. These selections apply to the month shown below.</p>
+
+          <div class="field">
+            <label for="top-stories-month">Month</label>
+            <input id="top-stories-month" type="month">
+            <small>The homepage displays the current month's Top Stories.</small>
+          </div>
+
+          <div id="top-stories-options" class="top-story-grid" style="margin-top:20px">
+            <p class="muted">Loading Top Stories…</p>
+          </div>
+
+          <div class="button-row">
+            <button class="btn" id="save-top-stories-button" type="button">Save Top Stories</button>
+            <button class="btn btn-light" id="refresh-top-stories-button" type="button">Refresh</button>
+          </div>
+          <div id="top-stories-message" class="status-message" role="status" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section class="dashboard-section" id="announcements-section" hidden>
+        <section class="panel">
+          <h2 id="announcement-form-heading">Create an Announcement</h2>
+          <p class="muted">Announcements appear underneath Top Stories on the homepage. Set an expiry date for time-sensitive notices.</p>
+
+          <form id="announcement-form">
+            <div class="field">
+              <label for="announcement-title">Announcement title *</label>
+              <input id="announcement-title" maxlength="200" required>
+            </div>
+
+            <div class="field">
+              <label for="announcement-body">Announcement details *</label>
+              <textarea id="announcement-body" rows="4" required></textarea>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="announcement-link">Optional link URL</label>
+                <input id="announcement-link" type="url" placeholder="https://example.com">
+              </div>
+              <div class="field">
+                <label for="announcement-priority">Priority</label>
+                <select id="announcement-priority">
+                  <option value="0">Normal</option>
+                  <option value="1">Important</option>
+                  <option value="2">High priority</option>
+                  <option value="3">Urgent</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="announcement-expires">Expiry date (optional)</label>
+                <input id="announcement-expires" type="datetime-local">
+                <small>After this time, the announcement should no longer appear publicly.</small>
+              </div>
+              <div class="field">
+                <label for="announcement-active">Visibility</label>
+                <select id="announcement-active">
+                  <option value="true">Active — show on website</option>
+                  <option value="false">Inactive — hide from website</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="button-row">
+              <button class="btn" id="save-announcement-button" type="submit">Save Announcement</button>
+              <button class="btn btn-light" id="cancel-announcement-edit" type="button" hidden>Cancel Edit</button>
+            </div>
+            <div id="announcement-form-message" class="status-message" role="status" aria-live="polite"></div>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="dashboard-bar">
+            <div>
+              <h2>Manage Announcements</h2>
+              <p class="muted">Review active, inactive, and expired notices.</p>
+            </div>
+            <button class="btn btn-light" id="refresh-announcements-button" type="button">Refresh List ↻</button>
+          </div>
+          <div id="announcements-list-message" class="status-message" role="status" aria-live="polite"></div>
+          <div id="announcements-admin-list" class="management-list">
+            <p class="muted">Loading announcements…</p>
+          </div>
+        </section>
+      </section>
+
+      <section class="dashboard-section" id="monitoring-section" hidden>
+
+<section class="dashboard-section" id="members-section" hidden>
+  <section class="panel">
+    <div class="dashboard-bar">
+      <div>
+        <h2>Membership Approval</h2>
+        <p class="muted">
+          Review reader accounts and approve or reject membership requests.
+        </p>
+      </div>
+      <button class="btn btn-light" id="refresh-members-button" type="button">
+        Refresh List ↻
+      </button>
+    </div>
+
+    <div id="members-message" class="status-message"
+         role="status" aria-live="polite"></div>
+
+    <div id="members-list" class="management-list">
+      <p class="muted">Membership requests will appear here.</p>
+    </div>
+  </section>
+</section>
+
+        <section class="panel">
+          <div class="dashboard-bar">
+            <div>
+              <h2>Category Monitoring</h2>
+              <p class="muted">A quick overview of published articles under each category and subcategory. Sections remain listed even when they have no published content.</p>
+            </div>
+            <button class="btn btn-light" id="refresh-monitoring-button" type="button">Refresh ↻</button>
+          </div>
+
+          <div id="monitoring-summary" class="stats-grid"></div>
+          <div id="category-monitor" class="monitor-grid" style="margin-top:20px">
+            <p class="muted">Loading category information…</p>
+          </div>
+          <div id="monitoring-message" class="status-message" role="status" aria-live="polite"></div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <footer class="admin-footer">AU THE STANDARD · Jose Rizal Campus</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const $ = (id) => document.getElementById(id);
+
+      const loginPanel = $("login-panel");
+      const dashboardPanel = $("dashboard-panel");
+      const loginForm = $("login-form");
+      const articleForm = $("article-form");
+      const loginMessage = $("login-message");
+      const dashboardMessage = $("dashboard-message");
+      const formMessage = $("form-message");
+      const articleListMessage = $("article-list-message");
+      const articleList = $("article-list");
+      const imageInput = $("article-image");
+      const imagePreview = $("image-preview");
+      const imageStatus = $("image-status");
+
+      const TAXONOMY = {
+        "News": [
+          "Campus News", "Local News", "National News", "International News",
+          "Investigative Journalism", "Press Releases", "Announcements"
+        ],
+        "Features": [
+          "Feature Stories", "Feature Writing", "Explainers", "Student Spotlight",
+          "Campus Life", "Entertainment"
+        ],
+        "Opinion": [
+          "Editorials", "Editorial Writing", "Columns", "Editorial Cartoons"
+        ],
+        "Sports": ["Sports News", "Sports Features", "Sports Writing"],
+        "Multimedia": [
+          "Photojournalism", "Photo Stories", "MOJO", "Video Journalism",
+          "Podcast", "Documentary", "Infographics", "Data Visualization",
+          "Digital Illustration"
+        ],
+        "Literary": ["Poetry", "Short Story", "Essay"],
+        "Science & Technology": [
+          "Science News", "Technology Features", "Science Explainers"
+        ],
+        "Campus News": ["Campus News"],
+        "Community": ["Community"],
+        "Science and Technology": [
+          "Science News", "Technology Features", "Science Explainers"
+        ]
+      };
+
+      const CATEGORY_NAMES = [
+        "News", "Features", "Opinion", "Sports", "Multimedia",
+        "Literary", "Science & Technology"
+      ];
+
+      const $today = new Date();
+      const monthValue = `${$today.getFullYear()}-${String($today.getMonth() + 1).padStart(2, "0")}`;
+      $("top-stories-month").value = monthValue;
+
+    let currentUser = null;
+let currentRole = null;
+let currentEditingId = null;
+let currentCoverUrl = null;
+let editingAnnouncementId = null;
+let busy = false;
+let allArticles = [];
+
+let pendingNfcToken = null;
+let nfcVerificationPending = false;
+
+      function setMessage(element, message, type = "info") {
+        element.textContent = message || "";
+        element.className = "status-message";
+        if (message) element.classList.add("status-" + type);
+      }
+
+      function makeElement(tag, className, text) {
+        const element = document.createElement(tag);
+        if (className) element.className = className;
+        if (text !== undefined) element.textContent = text;
+        return element;
+      }
+
+      function canManageArticles() {
+        return Boolean(currentUser && ["admin", "editor"].includes(currentRole));
+      }
+
+      function setBusy(value) {
+        busy = value;
+        [
+          $("login-button"), $("save-draft-button"), $("publish-button"),
+          $("reset-button"), $("refresh-button"), $("logout-button"),
+          $("save-top-stories-button"), $("refresh-top-stories-button"),
+          $("save-announcement-button"), $("refresh-announcements-button"),
+          $("refresh-monitoring-button")
+        ].forEach((button) => {
+          if (button) button.disabled = value;
+        });
+
+        $("save-draft-button").textContent = value ? "Please wait…" : "Save Draft";
+        if (!currentEditingId) {
+          $("publish-button").textContent = value ? "Please wait…" : "Publish Article";
+        }
+      }
+
+      function showLogin(message = "") {
+        loginPanel.hidden = false;
+        dashboardPanel.hidden = true;
+        $("logout-button").hidden = true;
+        if (message) setMessage(loginMessage, message, "info");
+      }
+
+      function showDashboard() {
+        loginPanel.hidden = true;
+        dashboardPanel.hidden = false;
+        $("logout-button").hidden = false;
+        $("user-email").textContent = currentUser?.email || "";
+        $("role-label").textContent = currentRole || "No role";
+                const membersTab = document.querySelector(
+          '[data-tab="members-section"]'
+        );
+
+        if (membersTab) {
+          membersTab.hidden = currentRole !== "admin";
+        }
+        $("editor-panel").hidden = !canManageArticles();
+
+        if (!canManageArticles()) {
+          setMessage(
+            dashboardMessage,
+            "Your account is signed in but does not have editor or admin permission. Ask the publication administrator to check your profile role.",
+            "error"
+          );
+          document.querySelectorAll(".dashboard-section").forEach(section => {
+            section.hidden = true;
+          });
+          document.querySelector(".tabs").hidden = true;
+        } else {
+          document.querySelector(".tabs").hidden = false;
+          setMessage(dashboardMessage, "You are signed in and authorized to manage the publication.", "success");
+        }
+      }
+
+      async function loadCurrentRole() {
+        if (!currentUser) {
+          currentRole = null;
+          return;
+        }
+
+        const { data, error } = await supabaseClient
+          .from("profiles")
+          .select("role")
+          .eq("user_id", currentUser.id)
+          .maybeSingle();
+
+        if (error) {
+          console.error("Could not load user role:", error);
+          currentRole = null;
+          return;
+        }
+
+        currentRole = data?.role || null;
+      }
+
+      function makeSlug(title) {
+        const normalized = title
+          .normalize("NFKD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 100);
+
+        return normalized || "article";
+      }
+
+      function monthStart(value) {
+        return value ? `${value}-01` : null;
+      }
+
+      function setActiveTab(tabId) {
+        document.querySelectorAll(".dashboard-section").forEach(section => {
+          section.hidden = section.id !== tabId;
+        });
+
+        document.querySelectorAll(".tab-button").forEach(button => {
+          button.classList.toggle("active", button.dataset.tab === tabId);
+        });
+      }
+
+      document.querySelectorAll(".tab-button").forEach(button => {
+        button.addEventListener("click", () => setActiveTab(button.dataset.tab));
+      });
+
+      function populateSubcategories(selectedValue = "") {
+        const category = $("article-category").value;
+        const select = $("article-subcategory");
+        const options = TAXONOMY[category] || [];
+
+        select.replaceChildren();
+        select.appendChild(new Option("Choose a subcategory", ""));
+
+        options.forEach(name => {
+          select.appendChild(new Option(name, name));
+        });
+
+        if (selectedValue && !options.includes(selectedValue)) {
+          select.appendChild(new Option(selectedValue, selectedValue));
+        }
+
+        select.value = selectedValue || "";
+        $("coverage-field").hidden = !["News", "Campus News", "Community"].includes(category);
+      }
+
+      $("article-category").addEventListener("change", () => populateSubcategories());
+
+      function resetEditorMode(clearMessage = true) {
+        currentEditingId = null;
+        currentCoverUrl = null;
+        articleForm.reset();
+        populateSubcategories();
+        imagePreview.removeAttribute("src");
+        imagePreview.hidden = true;
+        imageStatus.textContent = "Choose an image for your article cover.";
+        $("editor-heading").textContent = "Create an Article";
+        $("publish-button").textContent = "Publish Article";
+        if (clearMessage) setMessage(formMessage, "");
+      }
+
+      function showImagePreview(url, description) {
+        if (url) {
+          imagePreview.src = url;
+          imagePreview.hidden = false;
+          imageStatus.textContent = description || "Current article cover.";
+        } else {
+          imagePreview.removeAttribute("src");
+          imagePreview.hidden = true;
+          imageStatus.textContent = "Choose an image for your article cover.";
+        }
+      }
+
+      imageInput.addEventListener("change", () => {
+        const file = imageInput.files?.[0];
+
+        if (!file) {
+          showImagePreview(currentCoverUrl, currentCoverUrl ? "Current saved cover image." : "");
+          return;
+        }
+
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+
+        if (!allowedTypes.includes(file.type)) {
+          imageInput.value = "";
+          showImagePreview(currentCoverUrl, "Current saved cover image.");
+          setMessage(formMessage, "Please select a JPG, PNG, WEBP, or GIF image.", "error");
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          imageInput.value = "";
+          showImagePreview(currentCoverUrl, "Current saved cover image.");
+          setMessage(formMessage, "Your image is larger than 5 MB. Please choose a smaller image.", "error");
+          return;
+        }
+
+        showImagePreview(URL.createObjectURL(file), "Selected: " + file.name);
+        setMessage(formMessage, "");
+      });
+
+      async function uploadCoverImage(file) {
+        const extensionByType = {
+          "image/jpeg": "jpg",
+          "image/png": "png",
+          "image/webp": "webp",
+          "image/gif": "gif"
+        };
+
+        if (!extensionByType[file.type]) {
+          throw new Error("Please choose a JPG, PNG, WEBP, or GIF image.");
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          throw new Error("The image exceeds the 5 MB upload limit.");
+        }
+
+        const extension = extensionByType[file.type];
+        const filePath = `${currentUser.id}/${crypto.randomUUID()}.${extension}`;
+
+        const { error: uploadError } = await supabaseClient.storage
+          .from("article-images")
+          .upload(filePath, file, {
+            contentType: file.type,
+            upsert: false
+          });
+
+        if (uploadError) {
+          console.error("Image upload failed:", uploadError);
+          throw new Error("Image upload failed. Check the article-images bucket and your upload permission. " + uploadError.message);
+        }
+
+        const { data } = supabaseClient.storage.from("article-images").getPublicUrl(filePath);
+        if (!data?.publicUrl) throw new Error("Supabase did not return an image URL.");
+        return data.publicUrl;
+      }
+
+      async function saveArticle(status) {
+        if (busy) return;
+
+        if (!canManageArticles()) {
+          setMessage(formMessage, "Only authorized editors and admins can save articles.", "error");
+          return;
+        }
+
+        if (!articleForm.reportValidity()) return;
+
+        const title = $("article-title").value.trim();
+        const author = $("article-author").value.trim();
+        const category = $("article-category").value;
+        const subcategory = $("article-subcategory").value || null;
+        const coverageLevel = $("coverage-field").hidden ? null : ($("article-coverage").value || null);
+        const excerpt = $("article-excerpt").value.trim();
+        const content = $("article-content").value.trim();
+        const selectedFile = imageInput.files?.[0];
+
+        if (!title || !author || !excerpt || !content) {
+          setMessage(formMessage, "Please complete all required fields.", "error");
+          return;
+        }
+
+        setBusy(true);
+        setMessage(formMessage, status === "published" ? "Publishing your article…" : "Saving your draft…", "info");
+
+        try {
+          let coverUrl = currentCoverUrl;
+          if (selectedFile) coverUrl = await uploadCoverImage(selectedFile);
+
+          const articleData = {
+            title,
+            author,
+            category,
+            subcategory,
+            coverage_level: coverageLevel,
+            excerpt,
+            content,
+            cover_image: coverUrl,
+            status,
+            updated_at: new Date().toISOString()
+          };
+
+          if (!currentEditingId) {
+            articleData.slug = `${makeSlug(title)}-${Date.now().toString(36)}`;
+          }
+
+          let result;
+
+          if (currentEditingId) {
+            result = await supabaseClient
+              .from("articles")
+              .update(articleData)
+              .eq("id", currentEditingId)
+              .select("id")
+              .single();
+          } else {
+            result = await supabaseClient
+              .from("articles")
+              .insert(articleData)
+              .select("id")
+              .single();
+          }
+
+          if (result.error) throw result.error;
+
+          setMessage(formMessage, status === "published" ? "Article published successfully!" : "Draft saved successfully!", "success");
+          resetEditorMode(false);
+          await loadArticles();
+          await loadMonitoring();
+                  if (currentRole === "admin") await loadMembers();
+          await loadDashboardStats();
+        } catch (error) {
+          console.error("Unable to save article:", error);
+          setMessage(formMessage, error.message || "Unable to save the article. Please try again.", "error");
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      $("save-draft-button").addEventListener("click", () => saveArticle("draft"));
+      $("publish-button").addEventListener("click", () => saveArticle("published"));
+      $("reset-button").addEventListener("click", () => resetEditorMode());
+
+      async function startEditing(id) {
+        if (!canManageArticles() || busy) return;
+
+        setMessage(formMessage, "Loading article…", "info");
+
+        const { data, error } = await supabaseClient
+          .from("articles")
+          .select("id,title,slug,author,category,subcategory,coverage_level,excerpt,content,cover_image,status")
+          .eq("id", id)
+          .maybeSingle();
+
+        if (error || !data) {
+          console.error("Unable to load article for editing:", error);
+          setMessage(formMessage, "Could not load this article for editing.", "error");
+          return;
+        }
+
+        currentEditingId = data.id;
+        currentCoverUrl = data.cover_image || null;
+
+        $("article-title").value = data.title || "";
+        $("article-category").value = data.category || "News";
+        populateSubcategories(data.subcategory || "");
+        $("article-coverage").value = data.coverage_level || "";
+        $("article-author").value = data.author || "";
+        $("article-excerpt").value = data.excerpt || "";
+        $("article-content").value = data.content || "";
+        imageInput.value = "";
+
+        showImagePreview(currentCoverUrl, currentCoverUrl ? "Saved cover image. Choose another file to replace it." : "");
+        $("editor-heading").textContent = "Edit Article";
+        $("publish-button").textContent = data.status === "published" ? "Update Published Article" : "Publish Article";
+
+        setMessage(formMessage, "Article loaded. Make your changes and save them.", "success");
+        setActiveTab("articles-section");
+        $("editor-panel").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      async function deleteArticle(id, title) {
+        if (!canManageArticles() || busy) return;
+        if (!window.confirm(`Delete "${title}"?\n\nThis action cannot be undone.`)) return;
+
+        setBusy(true);
+        setMessage(articleListMessage, "Deleting article…", "info");
+
+        try {
+          const { error } = await supabaseClient.from("articles").delete().eq("id", id);
+          if (error) throw error;
+
+          if (currentEditingId === id) resetEditorMode();
+          setMessage(articleListMessage, "Article deleted.", "success");
+          await loadArticles();
+          await loadTopStories();
+          await loadMonitoring();
+          await loadDashboardStats();
+        } catch (error) {
+          console.error("Unable to delete article:", error);
+          setMessage(articleListMessage, error.message || "Could not delete the article.", "error");
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      async function loadArticles() {
+        if (!currentUser || !canManageArticles()) return;
+
+        articleList.replaceChildren(makeElement("p", "muted", "Loading articles…"));
+
+        const { data, error } = await supabaseClient
+          .from("articles")
+          .select("id,title,slug,author,category,subcategory,coverage_level,excerpt,cover_image,status,created_at")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Unable to load articles:", error);
+          articleList.replaceChildren(makeElement("p", "muted", "Unable to load articles. Check your database permissions."));
+          setMessage(articleListMessage, error.message, "error");
+          return;
+        }
+
+        allArticles = data || [];
+        articleList.replaceChildren();
+        setMessage(articleListMessage, `${allArticles.length} article(s) found.`, "success");
+
+        if (!allArticles.length) {
+          articleList.appendChild(makeElement("p", "muted", "No articles yet. Create your first story above."));
+          return;
+        }
+
+        allArticles.forEach(article => {
+          const item = makeElement("article", "article-item");
+
+          if (article.cover_image) {
+            const image = makeElement("img", "article-thumb");
+            image.src = article.cover_image;
+            image.alt = "";
+            image.loading = "lazy";
+            image.onerror = () => image.removeAttribute("src");
+            item.appendChild(image);
+          } else {
+            item.appendChild(makeElement("div", "article-thumb"));
+          }
+
+          const details = document.createElement("div");
+          details.appendChild(makeElement(
+            "span",
+            "status-pill " + (article.status === "published" ? "published" : "draft"),
+            article.status || "draft"
+          ));
+          details.appendChild(makeElement("h3", "", article.title || "Untitled article"));
+
+          const date = article.created_at
+            ? new Date(article.created_at).toLocaleDateString("en-PH")
+            : "";
+
+          const taxonomy = [
+            article.category || "News",
+            article.subcategory,
+            article.coverage_level ? "Coverage: " + article.coverage_level : null,
+            article.author || "Unknown author",
+            date
+          ].filter(Boolean).join(" · ");
+
+          details.appendChild(makeElement("p", "", taxonomy));
+          details.appendChild(makeElement("p", "", article.excerpt || ""));
+
+          const actions = makeElement("div", "item-actions");
+
+          const editButton = makeElement("button", "btn btn-light", "Edit");
+          editButton.type = "button";
+          editButton.addEventListener("click", () => startEditing(article.id));
+          actions.appendChild(editButton);
+
+          if (article.status === "published") {
+            const viewButton = makeElement("a", "btn btn-light", "View");
+            viewButton.href = `article.html?id=${encodeURIComponent(article.slug || article.id)}`;
+            viewButton.target = "_blank";
+            viewButton.rel = "noopener noreferrer";
+            actions.appendChild(viewButton);
+          }
+
+          const deleteButton = makeElement("button", "btn btn-danger", "Delete");
+          deleteButton.type = "button";
+          deleteButton.addEventListener("click", () => deleteArticle(article.id, article.title || "Untitled article"));
+          actions.appendChild(deleteButton);
+
+          details.appendChild(actions);
+          item.appendChild(details);
+          articleList.appendChild(item);
+        });
+      }
+
+      async function loadDashboardStats() {
+        if (!canManageArticles()) return;
+
+        const { data, error } = await supabaseClient
+          .from("articles")
+          .select("id,status");
+
+        if (error) {
+          console.error("Unable to load dashboard counts:", error);
+          return;
+        }
+
+        const articles = data || [];
+        const published = articles.filter(item => item.status === "published").length;
+        const drafts = articles.filter(item => item.status !== "published").length;
+
+        const container = $("dashboard-stats");
+        container.replaceChildren();
+
+        [
+          ["Total articles", articles.length],
+          ["Published", published],
+          ["Drafts", drafts]
+        ].forEach(([label, number]) => {
+          const card = makeElement("div", "stat-card");
+          card.appendChild(makeElement("span", "stat-number", String(number)));
+          card.appendChild(makeElement("span", "stat-label", label));
+          container.appendChild(card);
+        });
+      }
+
+      // MONTHLY TOP STORIES
+      function getPublishedArticles() {
+        return allArticles.filter(article => article.status === "published");
+      }
+
+      async function loadTopStories() {
+        if (!canManageArticles()) return;
+
+        const container = $("top-stories-options");
+        container.replaceChildren(makeElement("p", "muted", "Loading Top Stories…"));
+
+        const selectedMonth = $("top-stories-month").value || monthValue;
+        const selectedMonthStart = monthStart(selectedMonth);
+
+        const { data: existing, error } = await supabaseClient
+          .from("top_stories")
+          .select("id,article_id,month_start,display_order")
+          .eq("month_start", selectedMonthStart)
+          .order("display_order", { ascending: true });
+
+        if (error) {
+          console.error("Could not load Top Stories:", error);
+          container.replaceChildren();
+          setMessage($("top-stories-message"), "Unable to load Top Stories: " + error.message, "error");
+          return;
+        }
+
+        if (!allArticles.length) await loadArticles();
+
+        container.replaceChildren();
+
+        for (let slot = 1; slot <= 3; slot++) {
+          const card = makeElement("div", "top-story-card");
+          card.appendChild(makeElement("h3", "", `Top Story #${slot}`));
+          card.appendChild(makeElement("p", "muted", `Display position ${slot} on the homepage.`));
+
+          const field = makeElement("div", "field");
+          const label = makeElement("label", "", "Published article");
+          label.htmlFor = `top-story-${slot}`;
+
+          const select = document.createElement("select");
+          select.id = `top-story-${slot}`;
+          select.dataset.slot = String(slot);
+          select.style.width = "100%";
+          select.style.minHeight = "45px";
+          select.style.padding = "10px";
+          select.style.border = "1px solid #cbd9d3";
+          select.style.borderRadius = "7px";
+
+          select.appendChild(new Option("— No story selected —", ""));
+          getPublishedArticles().forEach(article => {
+            const option = new Option(article.title, article.id);
+            select.appendChild(option);
+          });
+
+          const saved = (existing || []).find(item => item.display_order === slot);
+          select.value = saved?.article_id || "";
+
+          field.append(label, select);
+          card.appendChild(field);
+          container.appendChild(card);
+        }
+
+        setMessage($("top-stories-message"), "Choose up to three different published articles, then save.", "info");
+      }
+
+      $("top-stories-month").addEventListener("change", loadTopStories);
+      $("refresh-top-stories-button").addEventListener("click", async () => {
+        await loadArticles();
+        await loadTopStories();
+      });
+
+      $("save-top-stories-button").addEventListener("click", async () => {
+        if (busy || !canManageArticles()) return;
+
+        const selectedMonth = $("top-stories-month").value;
+        const selectedMonthStart = monthStart(selectedMonth);
+
+        if (!selectedMonthStart) {
+          setMessage($("top-stories-message"), "Please select a month.", "error");
+          return;
+        }
+
+        const selections = [1, 2, 3].map(slot => ({
+          slot,
+          articleId: $(`top-story-${slot}`)?.value || ""
+        }));
+
+        const chosenIds = selections.map(item => item.articleId).filter(Boolean);
+        if (new Set(chosenIds).size !== chosenIds.length) {
+          setMessage($("top-stories-message"), "Please choose a different article for each Top Story position.", "error");
+          return;
+        }
+
+        const publishedIds = new Set(getPublishedArticles().map(article => article.id));
+        if (chosenIds.some(id => !publishedIds.has(id))) {
+          setMessage($("top-stories-message"), "Only published articles can be selected. Refresh the list and try again.", "error");
+          return;
+        }
+
+        setBusy(true);
+        setMessage($("top-stories-message"), "Saving monthly Top Stories…", "info");
+
+        try {
+          const { error: deleteError } = await supabaseClient
+            .from("top_stories")
+            .delete()
+            .eq("month_start", selectedMonthStart);
+
+          if (deleteError) throw deleteError;
+
+          const rows = selections
+            .filter(item => item.articleId)
+            .map(item => ({
+              article_id: item.articleId,
+              month_start: selectedMonthStart,
+              display_order: item.slot
+            }));
+
+          if (rows.length) {
+            const { error: insertError } = await supabaseClient
+              .from("top_stories")
+              .insert(rows);
+
+            if (insertError) throw insertError;
+          }
+
+          setMessage($("top-stories-message"), "Monthly Top Stories saved successfully.", "success");
+          await loadTopStories();
+        } catch (error) {
+          console.error("Could not save Top Stories:", error);
+          setMessage($("top-stories-message"), error.message || "Unable to save Top Stories.", "error");
+        } finally {
+          setBusy(false);
+        }
+      });
+
+      // ANNOUNCEMENTS
+      function resetAnnouncementForm() {
+        editingAnnouncementId = null;
+        $("announcement-form").reset();
+        $("announcement-active").value = "true";
+        $("announcement-priority").value = "0";
+        $("announcement-form-heading").textContent = "Create an Announcement";
+        $("save-announcement-button").textContent = "Save Announcement";
+        $("cancel-announcement-edit").hidden = true;
+        setMessage($("announcement-form-message"), "");
+      }
+
+      $("cancel-announcement-edit").addEventListener("click", resetAnnouncementForm);
+
+      async function loadAnnouncements() {
+        if (!canManageArticles()) return;
+
+        const list = $("announcements-admin-list");
+        list.replaceChildren(makeElement("p", "muted", "Loading announcements…"));
+
+        const { data, error } = await supabaseClient
+          .from("announcements")
+          .select("id,title,body,link_url,priority,expires_at,is_active,created_at,updated_at")
+          .order("priority", { ascending: false })
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Unable to load announcements:", error);
+          list.replaceChildren(makeElement("p", "muted", "Unable to load announcements."));
+          setMessage($("announcements-list-message"), error.message, "error");
+          return;
+        }
+
+        list.replaceChildren();
+        setMessage($("announcements-list-message"), `${data.length} announcement(s) found.`, "success");
+
+        if (!data.length) {
+          list.appendChild(makeElement("p", "muted", "No announcements yet. Create one above."));
+          return;
+        }
+
+        data.forEach(item => {
+          const card = makeElement("article", "management-item");
+          card.appendChild(makeElement("div", "article-thumb", "📢"));
+
+          const details = document.createElement("div");
+          details.appendChild(makeElement(
+            "span",
+            "status-pill " + (item.is_active ? "active" : "inactive"),
+            item.is_active ? "Active" : "Inactive"
+          ));
+          details.appendChild(makeElement("h3", "", item.title));
+          details.appendChild(makeElement("p", "", item.body || ""));
+
+          const metadata = [
+            `Priority: ${item.priority ?? 0}`,
+            item.expires_at ? `Expires: ${new Date(item.expires_at).toLocaleString("en-PH")}` : "No expiry date"
+          ].join(" · ");
+
+          details.appendChild(makeElement("p", "", metadata));
+
+          if (item.link_url) {
+            const link = makeElement("a", "btn btn-light", "Open link ↗");
+            link.href = item.link_url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            details.appendChild(link);
+          }
+
+          const actions = makeElement("div", "item-actions");
+
+          const edit = makeElement("button", "btn btn-light", "Edit");
+          edit.type = "button";
+          edit.addEventListener("click", () => editAnnouncement(item));
+          actions.appendChild(edit);
+
+          const toggle = makeElement("button", "btn btn-light", item.is_active ? "Deactivate" : "Activate");
+          toggle.type = "button";
+          toggle.addEventListener("click", () => toggleAnnouncement(item));
+          actions.appendChild(toggle);
+
+          const remove = makeElement("button", "btn btn-danger", "Delete");
+          remove.type = "button";
+          remove.addEventListener("click", () => deleteAnnouncement(item));
+          actions.appendChild(remove);
+
+          details.appendChild(actions);
+          card.appendChild(details);
+          list.appendChild(card);
+        });
+      }
+
+      function editAnnouncement(item) {
+        editingAnnouncementId = item.id;
+        $("announcement-title").value = item.title || "";
+        $("announcement-body").value = item.body || "";
+        $("announcement-link").value = item.link_url || "";
+        $("announcement-priority").value = String(item.priority ?? 0);
+        $("announcement-active").value = String(Boolean(item.is_active));
+
+        if (item.expires_at) {
+          const date = new Date(item.expires_at);
+          const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+          $("announcement-expires").value = localDate.toISOString().slice(0, 16);
+        } else {
+          $("announcement-expires").value = "";
+        }
+
+        $("announcement-form-heading").textContent = "Edit Announcement";
+        $("save-announcement-button").textContent = "Update Announcement";
+        $("cancel-announcement-edit").hidden = false;
+        setMessage($("announcement-form-message"), "Editing announcement. Save your changes when ready.", "info");
+        $("announcement-form-heading").scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+
+      $("announcement-form").addEventListener("submit", async event => {
+        event.preventDefault();
+        if (busy || !canManageArticles()) return;
+
+        const title = $("announcement-title").value.trim();
+        const body = $("announcement-body").value.trim();
+        const linkUrl = $("announcement-link").value.trim();
+        const priority = Number($("announcement-priority").value);
+        const expiresValue = $("announcement-expires").value;
+        const isActive = $("announcement-active").value === "true";
+
+        if (!title || !body) {
+          setMessage($("announcement-form-message"), "Please enter both a title and details.", "error");
+          return;
+        }
+
+        if (linkUrl) {
+          try {
+            const parsed = new URL(linkUrl);
+            if (!["http:", "https:"].includes(parsed.protocol)) throw new Error();
+          } catch {
+            setMessage($("announcement-form-message"), "Please enter a valid http:// or https:// link.", "error");
+            return;
+          }
+        }
+
+        const announcementData = {
+          title,
+          body,
+          link_url: linkUrl || null,
+          priority,
+          expires_at: expiresValue ? new Date(expiresValue).toISOString() : null,
+          is_active: isActive,
+          updated_at: new Date().toISOString()
+        };
+
+        setBusy(true);
+        setMessage($("announcement-form-message"), "Saving announcement…", "info");
+
+        try {
+          let result;
+
+          if (editingAnnouncementId) {
+            result = await supabaseClient
+              .from("announcements")
+              .update(announcementData)
+              .eq("id", editingAnnouncementId);
+          } else {
+            result = await supabaseClient
+              .from("announcements")
+              .insert(announcementData);
+          }
+
+          if (result.error) throw result.error;
+
+          resetAnnouncementForm();
+          setMessage($("announcement-form-message"), "Announcement saved successfully.", "success");
+          await loadAnnouncements();
+        } catch (error) {
+          console.error("Unable to save announcement:", error);
+          setMessage($("announcement-form-message"), error.message || "Unable to save announcement.", "error");
+        } finally {
+          setBusy(false);
+        }
+      });
+
+      async function toggleAnnouncement(item) {
+        if (busy || !canManageArticles()) return;
+
+        setBusy(true);
+        try {
+          const { error } = await supabaseClient
+            .from("announcements")
+            .update({
+              is_active: !item.is_active,
+              updated_at: new Date().toISOString()
+            })
+            .eq("id", item.id);
+
+          if (error) throw error;
+
+          setMessage($("announcements-list-message"), "Announcement visibility updated.", "success");
+          await loadAnnouncements();
+        } catch (error) {
+          setMessage($("announcements-list-message"), error.message || "Unable to update announcement.", "error");
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      async function deleteAnnouncement(item) {
+        if (busy || !canManageArticles()) return;
+        if (!window.confirm(`Delete the announcement "${item.title}"?`)) return;
+
+        setBusy(true);
+        try {
+          const { error } = await supabaseClient
+            .from("announcements")
+            .delete()
+            .eq("id", item.id);
+
+          if (error) throw error;
+
+          if (editingAnnouncementId === item.id) resetAnnouncementForm();
+          setMessage($("announcements-list-message"), "Announcement deleted.", "success");
+          await loadAnnouncements();
+        } catch (error) {
+          setMessage($("announcements-list-message"), error.message || "Unable to delete announcement.", "error");
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      $("refresh-announcements-button").addEventListener("click", loadAnnouncements);
+
+      // CATEGORY MONITORING
+      async function loadMonitoring() {
+        if (!canManageArticles()) return;
+
+        const container = $("category-monitor");
+        const summary = $("monitoring-summary");
+        container.replaceChildren(makeElement("p", "muted", "Loading category information…"));
+
+        const { data, error } = await supabaseClient
+          .from("articles")
+          .select("id,status,category,subcategory");
+
+        if (error) {
+          console.error("Could not load category monitoring:", error);
+          container.replaceChildren();
+          setMessage($("monitoring-message"), error.message || "Unable to load category monitoring.", "error");
+          return;
+        }
+
+        const published = (data || []).filter(item => item.status === "published");
+        const drafts = (data || []).filter(item => item.status !== "published");
+
+        summary.replaceChildren();
+        [
+          ["Published stories", published.length],
+          ["Drafts", drafts.length],
+          ["Main categories", CATEGORY_NAMES.length]
+        ].forEach(([label, count]) => {
+          const card = makeElement("div", "stat-card");
+          card.appendChild(makeElement("span", "stat-number", String(count)));
+          card.appendChild(makeElement("span", "stat-label", label));
+          summary.appendChild(card);
+        });
+
+        container.replaceChildren();
+
+        CATEGORY_NAMES.forEach(category => {
+          const mainArticles = published.filter(item => item.category === category);
+          const card = makeElement("div", "monitor-card");
+          card.appendChild(makeElement("h3", "", category));
+          card.appendChild(makeElement("p", "", `Published articles: ${mainArticles.length}`));
+
+          (TAXONOMY[category] || []).forEach(subcategory => {
+            const count = mainArticles.filter(item => item.subcategory === subcategory).length;
+            const status = count > 0 ? `${count} published` : "Needs content";
+            card.appendChild(makeElement("p", "", `${subcategory}: ${status}`));
+          });
+
+          container.appendChild(card);
+        });
+
+        setMessage($("monitoring-message"), "Category monitoring updated. Counts include published articles only.", "success");
+      }
+
+      $("refresh-monitoring-button").addEventListener("click", loadMonitoring);
+
+      // MEMBERSHIP APPROVAL — ADMIN ONLY
+      async function loadMembers() {
+        if (currentRole !== "admin") return;
+
+        const list = $("members-list");
+        const message = $("members-message");
+
+        list.replaceChildren(makeElement("p", "muted", "Loading reader accounts…"));
+        setMessage(message, "");
+
+        try {
+          const { data, error } = await supabaseClient
+            .from("profiles")
+            .select("user_id, role, approval_status")
+            .eq("role", "reader")
+            .order("approval_status", { ascending: true });
+
+          if (error) throw error;
+
+          list.replaceChildren();
+
+          if (!data || data.length === 0) {
+            list.appendChild(
+              makeElement("p", "muted", "No reader accounts found.")
+            );
+            setMessage(message, "Membership list updated.", "success");
+            return;
+          }
+
+          data.forEach(member => {
+            const card = makeElement("div", "monitor-card");
+            const status = member.approval_status || "pending";
+
+            card.appendChild(makeElement("h3", "", "Reader Account"));
+            card.appendChild(
+              makeElement("p", "", `User ID: ${member.user_id}`)
+            );
+            card.appendChild(
+              makeElement("p", "", `Status: ${status}`)
+            );
+
+            if (status === "pending") {
+              const approveButton = makeElement("button", "btn btn-light", "Approve");
+              approveButton.type = "button";
+              approveButton.addEventListener("click", () =>
+                updateMemberApproval(member.user_id, "approved")
+              );
+
+              const rejectButton = makeElement("button", "btn btn-light", "Reject");
+              rejectButton.type = "button";
+              rejectButton.addEventListener("click", () =>
+                updateMemberApproval(member.user_id, "rejected")
+              );
+
+              card.appendChild(approveButton);
+              card.appendChild(rejectButton);
+            } else {
+              const resetButton = makeElement(
+                "button",
+                "btn btn-light",
+                "Set to Pending"
+              );
+              resetButton.type = "button";
+              resetButton.addEventListener("click", () =>
+                updateMemberApproval(member.user_id, "pending")
+              );
+              card.appendChild(resetButton);
+            }
+
+            list.appendChild(card);
+          });
+
+          setMessage(message, "Reader accounts loaded.", "success");
+        } catch (error) {
+          console.error("Unable to load reader accounts:", error);
+          list.replaceChildren(
+            makeElement("p", "muted", "Could not load reader accounts.")
+          );
+          setMessage(
+            message,
+            error.message || "Unable to load membership list.",
+            "error"
+          );
+        }
+      }
+
+      async function updateMemberApproval(userId, newStatus) {
+        if (currentRole !== "admin" || busy) return;
+
+        const confirmed = window.confirm(
+          `Change this reader's membership status to "${newStatus}"?`
+        );
+
+        if (!confirmed) return;
+
+        setBusy(true);
+        setMessage($("members-message"), "Updating membership…", "info");
+
+        try {
+          const { error } = await supabaseClient
+            .from("profiles")
+            .update({ approval_status: newStatus })
+            .eq("user_id", userId)
+            .eq("role", "reader");
+
+          if (error) throw error;
+
+          setMessage(
+            $("members-message"),
+            `Membership status updated to "${newStatus}".`,
+            "success"
+          );
+
+          await loadMembers();
+        } catch (error) {
+          console.error("Unable to update membership:", error);
+          setMessage(
+            $("members-message"),
+            error.message || "Unable to update membership status.",
+            "error"
+          );
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      $("refresh-members-button").addEventListener("click", loadMembers);
+
+// NFC SCANNER CODE WILL GO HERE
+function decodeNfcTextRecord(record) {
+  const bytes = new Uint8Array(
+    record.data.buffer,
+    record.data.byteOffset,
+    record.data.byteLength
+  );
+
+  if (bytes.length < 2) return "";
+
+  const languageLength = bytes[0] & 0x3f;
+  const textStart = 1 + languageLength;
+
+  if (textStart > bytes.length) return "";
+
+  return new TextDecoder()
+    .decode(bytes.slice(textStart))
+    .trim();
+}
+
+$("nfc-scan-button").addEventListener("click", async () => {
+  const button = $("nfc-scan-button");
+  const message = $("nfc-login-message");
+
+  pendingNfcToken = null;
+
+  if (!("NDEFReader" in window)) {
+    setMessage(
+      message,
+      "NFC is unavailable. Use Android Chrome over HTTPS or localhost.",
+      "error"
+    );
+    return;
+  }
+
+  let controller;
+
+  try {
+    button.disabled = true;
+
+    setMessage(
+      message,
+      "Hold your NFC card near your phone...",
+      "info"
+    );
+
+    const reader = new NDEFReader();
+    controller = new AbortController();
+
+    await reader.scan({ signal: controller.signal });
+
+    reader.addEventListener("reading", event => {
+      try {
+        const record = event.message.records.find(
+          item => item.recordType === "text"
+        );
+
+        if (!record) {
+          setMessage(message, "No text token found on this card.", "error");
+          return;
+        }
+
+        const token = decodeNfcTextRecord(record);
+
+        if (token.length < 32 || token.length > 256) {
+          setMessage(message, "Invalid NFC token.", "error");
+          return;
+        }
+
+        pendingNfcToken = token;
+        controller.abort();
+
+        setMessage(
+          message,
+          "Card read! Enter your email and password, then log in.",
+          "success"
+        );
+      } catch (error) {
+        console.error("NFC read failed:", error);
+        setMessage(message, "Unable to read NFC card.", "error");
+      } finally {
+        button.disabled = false;
+      }
+    }, { signal: controller.signal });
+
+    reader.addEventListener("readingerror", () => {
+      setMessage(
+        message,
+        "Could not read the card. Try tapping it again.",
+        "error"
+      );
+      button.disabled = false;
+    }, { signal: controller.signal });
+
+  } catch (error) {
+    console.error("NFC scan could not start:", error);
+    button.disabled = false;
+
+    setMessage(
+      message,
+      error.name === "NotAllowedError"
+        ? "NFC permission denied. Allow access and try again."
+        : "Unable to start NFC scanning. Check that NFC is enabled.",
+      "error"
+    );
+  }
+});
+
+// LOGIN AND SESSION
+      loginForm.addEventListener("submit", async event => {
+        event.preventDefault();
+        if (busy) return;
+
+        setBusy(true);
+        setMessage(loginMessage, "Signing in…", "info");
+
+        try {
+          const email = $("login-email").value.trim();
+          const password = $("login-password").value;
+
+          const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+
+          $("login-password").value = "";
+          setMessage(loginMessage, "Login successful.", "success");
+        } catch (error) {
+          console.error("Login failed:", error);
+          setMessage(loginMessage, error.message || "Unable to log in.", "error");
+        } finally {
+          setBusy(false);
+        }
+      });
+
+
+loginForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (busy) return;
+
+  setBusy(true);
+  nfcVerificationPending = Boolean(pendingNfcToken);
+
+  const cardToken = pendingNfcToken;
+
+  setMessage(loginMessage, "Signing in…", "info");
+
+  try {
+    const email = $("login-email").value.trim();
+    const password = $("login-password").value;
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    if (cardToken) {
+      setMessage(loginMessage, "Verifying NFC card…", "info");
+
+      const { data: verification, error: verificationError } =
+        await supabaseClient.functions.invoke("verify-nfc-card", {
+          body: { card_token: cardToken }
+        });
+
+      if (verificationError || verification?.authorized !== true) {
+        await supabaseClient.auth.signOut();
+
+        throw new Error(
+          verification?.message ||
+          "NFC verification failed. Check that your card is active and assigned to this account."
+        );
+      }
+    }
+
+    pendingNfcToken = null;
+    $("login-password").value = "";
+
+    setMessage(
+      loginMessage,
+      cardToken
+        ? "Email, password, and NFC card verified."
+        : "Login successful.",
+      "success"
+    );
+
+    const { data: sessionData, error: sessionError } =
+      await supabaseClient.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    await initializeDashboard(sessionData.session);
+
+  } catch (error) {
+    console.error("Login failed:", error);
+    pendingNfcToken = null;
+
+    setMessage(
+      loginMessage,
+      error.message || "Unable to log in.",
+      "error"
+    );
+
+  } finally {
+    nfcVerificationPending = false;
+    setBusy(false);
+  }
+});
+
+      $("logout-button").addEventListener("click", async () => {
+        if (busy) return;
+
+        setBusy(true);
+        try {
+          const { error } = await supabaseClient.auth.signOut();
+          if (error) throw error;
+
+          currentUser = null;
+          currentRole = null;
+          allArticles = [];
+          resetEditorMode();
+          resetAnnouncementForm();
+          showLogin("You have been signed out.");
+        } catch (error) {
+          console.error("Logout failed:", error);
+          setMessage(dashboardMessage, error.message || "Unable to sign out.", "error");
+        } finally {
+          setBusy(false);
+        }
+      });
+
+      $("refresh-button").addEventListener("click", loadArticles);
+
+      async function initializeDashboard(session) {
+        currentUser = session?.user || null;
+
+        if (!currentUser) {
+          currentRole = null;
+          showLogin();
+          return;
+        }
+
+        await loadCurrentRole();
+        showDashboard();
+
+        if (!canManageArticles()) return;
+
+        await loadArticles();
+        await loadDashboardStats();
+        await loadTopStories();
+        await loadAnnouncements();
+        await loadMonitoring();
+      }
+
+      async function start() {
+        if (typeof supabaseClient === "undefined" || !supabaseClient?.auth) {
+          showLogin("Supabase did not initialize. Check supabase.js and its configuration.");
+          $("login-button").disabled = true;
+          return;
+        }
+
+        const { data, error } = await supabaseClient.auth.getSession();
+
+        if (error) {
+          console.error("Could not retrieve session:", error);
+          showLogin("Unable to check your login session. Please refresh the page.");
+          return;
+        }
+
+        await initializeDashboard(data.session);
+
+        supabaseClient.auth.onAuthStateChange((_event, session) => {
+  setTimeout(() => {
+    if (nfcVerificationPending) return;
+    initializeDashboard(session);
+  }, 0);
+});
+      }
+
+      populateSubcategories();
+      start();
+    })();
+  </script>
+  
+<section id="nfc-registration">
+  <h2>Admin NFC Card Registration</h2>
+  <p>Register a new NFC card for your approved admin account.</p>
+
+  <label for="nfc-card-label">Card name</label>
+  <input
+    id="nfc-card-label"
+    type="text"
+    value="THE STANDARD Admin NFC Card"
+    maxlength="80"
+  />
+
+  <button id="register-nfc-button" type="button">
+    Register New NFC Card
+  </button>
+
+  <p id="nfc-registration-message" role="status"></p>
+
+  <label for="nfc-token">New card token</label>
+  <textarea
+    id="nfc-token"
+    rows="3"
+    readonly
+    placeholder="Your new token will appear here."
+  ></textarea>
+
+  <button id="copy-nfc-token" type="button">
+    Copy Token
+  </button>
+</section>
+
+<script>
+  const registerButton = document.getElementById("register-nfc-button");
+  const copyButton = document.getElementById("copy-nfc-token");
+  const tokenField = document.getElementById("nfc-token");
+  const message = document.getElementById("nfc-registration-message");
+
+  registerButton.addEventListener("click", async () => {
+    message.textContent = "Registering...";
+    tokenField.value = "";
+    registerButton.disabled = true;
+
+    try {
+      const { data, error } =
+        await supabaseClient.functions.invoke("nfc-register", {
+          body: {
+            card_label:
+              document.getElementById("nfc-card-label").value.trim()
+          }
+        });
+
+      if (error) throw error;
+      if (!data?.success || !data?.card_token) {
+        throw new Error(data?.error || "Registration failed.");
+      }
+
+      tokenField.value = data.card_token;
+      message.textContent =
+        "Registration successful. Keep this token private.";
+    } catch (error) {
+      message.textContent = "Registration failed: " + error.message;
+    } finally {
+      registerButton.disabled = false;
+    }
+  });
+
+  copyButton.addEventListener("click", async () => {
+    if (!tokenField.value) {
+      message.textContent = "Register a card first.";
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(tokenField.value);
+      message.textContent = "Token copied. Do not share it.";
+    } catch {
+      tokenField.focus();
+      tokenField.select();
+      message.textContent =
+        "Clipboard unavailable. Token selected; copy it locally.";
+    }
+  });
+</script>
+
+</body>
+</html>

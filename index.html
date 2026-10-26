@@ -1,0 +1,345 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AU THE STANDARD | Jose Rizal Campus</title>
+  <meta name="description" content="Campus news, features, opinion, sports, multimedia, literary works, and science and technology stories from Arellano University Jose Rizal Campus.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="home">
+
+  <!-- HEADER -->
+  <header class="site-header">
+
+    <!-- TOPLINE -->
+    <div class="topline">
+      <span>STUDENT JOURNALISM · COMMUNITY · PUBLIC AFFAIRS</span>
+    </div>
+
+    <!-- MASTHEAD -->
+
+<div class="masthead">
+  <a class="publication-brand" href="#home" aria-label="AU THE STANDARD homepage">
+    <img
+      class="au-logo"
+      src="images/au-logo.png"
+      alt="Arellano University logo"
+    >
+
+    <div class="brand-wrap">
+      <div class="brand-title">
+        <span class="brand-au">AU</span>
+        <span class="brand-name">THE STANDARD</span>
+      </div>
+
+      <span class="brand-campus">JOSE RIZAL CAMPUS</span>
+
+      <div class="masthead-details">
+        <p class="masthead-tagline">TRUTH CONQUERS ALL</p>
+        <p class="masthead-address">Gov. Pascual Avenue, Malabon City</p>
+      </div>
+    </div>
+  </a>
+</div>
+
+
+    <!-- SEARCH AND INFORMATION MENU -->
+    <div class="header-tools">
+
+      <details class="information-menu">
+
+        <summary aria-label="Open publication and organization menu">
+          <span class="menu-icon" aria-hidden="true">☰</span>
+          <span class="menu-label">MENU</span>
+        </summary>
+
+        <div class="information-menu-content">
+
+          <section class="information-menu-section">
+            <h3>Publication</h3>
+            <a href="about.html">About Us</a>
+            <a href="history.html">History of the Publication</a>
+            <a href="eic-corner.html">EIC Corner</a>
+            <a href="staff-directory.html">Staff Directory</a>
+            <a href="archives.html">Archives</a>
+            <a href="awards.html">Awards &amp; Achievements</a>
+            <a href="submission-guidelines.html">Submission Guidelines</a>
+          </section>
+
+          <section class="information-menu-section">
+            <h3>Organization</h3>
+            <a href="organizational-chart.html">Organizational Chart</a>
+            <a href="transparency.html">Transparency Reports</a>
+            <a href="activities.html">Organization Activities</a>
+          </section>
+
+          <section class="information-menu-section">
+            <h3>Staff Access</h3>
+            <a href="admin.html">Staff / Admin Login</a>
+          </section>
+
+        </div>
+      </details>
+
+      <form id="search-form" class="search-form">
+        <label class="visually-hidden" for="search-input">
+          Search published stories
+        </label>
+
+        <input
+          id="search-input"
+          type="search"
+          placeholder="Search stories..."
+          aria-label="Search published stories"
+        >
+
+        <button type="submit">SEARCH</button>
+      </form>
+
+    </div>
+
+    <!-- MAIN CATEGORY NAVIGATION -->
+    <nav class="navigation" aria-label="Main navigation">
+
+      <a href="#home" data-category="all">HOME</a>
+
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          NEWS <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="#news" data-category="News">All News</a>
+          <a href="#news" data-subcategory="Campus News">Campus News</a>
+          <a href="#news" data-subcategory="Local News">Local News</a>
+          <a href="#news" data-subcategory="National News">National News</a>
+          <a href="#news" data-subcategory="International News">International News</a>
+          <a href="#news" data-subcategory="Investigative Journalism">Investigative Journalism</a>
+          <a href="#news" data-subcategory="Press Releases">Press Releases</a>
+          <a href="#news" data-subcategory="Announcements">Announcements</a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          FEATURES <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="#news" data-category="Features">All Features</a>
+          <a href="#news" data-subcategory="Feature Stories">Feature Stories</a>
+          <a href="#news" data-subcategory="Feature Writing">Feature Writing</a>
+          <a href="#news" data-subcategory="Explainers">Explainers</a>
+          <a href="#news" data-subcategory="Student Spotlight">Student Spotlight</a>
+          <a href="#news" data-subcategory="Campus Life">Campus Life</a>
+          <a href="#news" data-subcategory="Entertainment">Entertainment</a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          OPINION <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="#news" data-category="Opinion">All Opinion</a>
+          <a href="#news" data-subcategory="Editorials">Editorials</a>
+          <a href="#news" data-subcategory="Editorial Writing">Editorial Writing</a>
+          <a href="#news" data-subcategory="Columns">Columns</a>
+          <a href="#news" data-subcategory="Editorial Cartoons">Editorial Cartoons</a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          SPORTS <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="#news" data-category="Sports">All Sports</a>
+          <a href="#news" data-subcategory="Sports News">Sports News</a>
+          <a href="#news" data-subcategory="Sports Features">Sports Features</a>
+          <a href="#news" data-subcategory="Sports Writing">Sports Writing</a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          MULTIMEDIA <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="#news" data-category="Multimedia">All Multimedia</a>
+          <a href="#news" data-subcategory="Photojournalism">Photojournalism</a>
+          <a href="#news" data-subcategory="Photo Stories">Photo Stories</a>
+          <a href="#news" data-subcategory="MOJO">MOJO</a>
+          <a href="#news" data-subcategory="Video Journalism">Video Journalism</a>
+          <a href="#news" data-subcategory="Podcast">Podcast</a>
+          <a href="#news" data-subcategory="Documentary">Documentary</a>
+          <a href="#news" data-subcategory="Infographics">Infographics</a>
+          <a href="#news" data-subcategory="Data Visualization">Data Visualization</a>
+          <a href="#news" data-subcategory="Digital Illustration">Digital Illustration</a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          LITERARY <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="#news" data-category="Literary">All Literary</a>
+          <a href="#news" data-subcategory="Poetry">Poetry</a>
+          <a href="#news" data-subcategory="Short Story">Short Story</a>
+          <a href="#news" data-subcategory="Essay">Essay</a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          SCIENCE &amp; TECHNOLOGY <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="#news" data-category="Science and Technology">All Science &amp; Technology</a>
+          <a href="#news" data-subcategory="Science News">Science News</a>
+          <a href="#news" data-subcategory="Technology Features">Technology Features</a>
+          <a href="#news" data-subcategory="Science Explainers">Science Explainers</a>
+          <a href="#news" data-subcategory="Science &amp; Technology Writing">Science &amp; Technology Writing</a>
+        </div>
+      </div>
+<a href="account.html">Account</a>
+    </nav>
+
+<div class="subcategory-strip" aria-label="Explore subcategories"></div>
+
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container">
+
+    <!-- INTRODUCTION / FEATURED AREA -->
+    <section class="section-block" id="top-stories">
+
+      <div class="section-title">
+        <h2>THE STANDARD</h2>
+        <span>TRUTH CONQUERS ALL</span>
+      </div>
+
+      <div class="lead-layout">
+
+        <article class="lead-story searchable" data-category="all">
+
+          <img
+            class="story-image lead-image"
+            src="images/featured.jpg"
+            alt="Featured image of AU THE STANDARD"
+          >
+
+          <div class="story-info">
+            <span class="category">AU THE STANDARD · JOSE RIZAL CAMPUS</span>
+
+            <h1>Truth Conquers All.</h1>
+
+            <p class="summary">
+              Campus journalism that listens to our community, asks meaningful
+              questions, and reports the facts.
+            </p>
+
+            <p class="byline">THE STUDENT VOICE, WITH PURPOSE</p>
+
+            <a class="read-link" href="#about">
+              ABOUT THIS PUBLICATION →
+            </a>
+          </div>
+
+        </article>
+
+        <!-- MONTHLY TOP STORIES -->
+        <aside class="trending" id="monthly-top-stories">
+
+          <h2>TOP STORIES</h2>
+          <p class="sidebar-description">EDITOR'S PICKS · THIS MONTH</p>
+
+          <div id="top-stories-list">
+            <p class="loading-message">Loading this month's top stories...</p>
+          </div>
+
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS -->
+    <section class="section-block announcements-section" id="announcements-section">
+
+      <div class="section-title">
+        <h2>ANNOUNCEMENTS</h2>
+        <span>PUBLICATION &amp; CAMPUS UPDATES</span>
+      </div>
+
+      <div id="announcements-list">
+        <p class="loading-message">Loading announcements...</p>
+      </div>
+
+    </section>
+
+    <!-- LATEST PUBLISHED STORIES -->
+    <section class="section-block" id="news">
+
+      <div class="section-title">
+        <h2 id="stories-heading">LATEST STORIES</h2>
+        <span id="stories-subtitle">THE 20 LATEST PUBLISHED STORIES</span>
+      </div>
+
+      <div class="story-grid" id="sample-stories">
+        <p id="articles-loading">Loading published stories...</p>
+      </div>
+
+      <p id="no-results" hidden>
+        No published stories in this category yet.
+      </p>
+
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+
+      <span class="category">ABOUT THE STANDARD</span>
+
+      <h2>Journalism with purpose.</h2>
+
+      <p>
+        AU THE STANDARD is the student publication of Arellano University
+        Jose Rizal Campus. It aims to uphold responsible reporting, meaningful
+        storytelling, and the voices of the campus community.
+      </p>
+
+      <a class="read-link" href="about.html">LEARN MORE ABOUT US →</a>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+
+    <a class="brand footer-brand" href="#home">
+      AU <strong>THE STANDARD</strong><span>.</span>
+    </a>
+
+    <p>Gov. Pascual Avenue, Malabon City</p>
+    <p>TRUTH CONQUERS ALL · THE STUDENT VOICE, WITH PURPOSE</p>
+    <p>© 2026 AU THE STANDARD</p>
+
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
+```
