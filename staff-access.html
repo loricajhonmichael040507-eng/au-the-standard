@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#073b3b">
+  <title>Staff & Admin Access | AU THE STANDARD</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="staff-access-page">
+  <main class="staff-access-layout">
+    <a class="staff-back-link" href="index.html">
+      ← Back to Welcome
+    </a>
+
+    <section class="staff-access-card">
+      <img
+        src="images/au-logo.png"
+        alt="Arellano University logo"
+        class="access-logo"
+      >
+
+      <p class="access-eyebrow">AU THE STANDARD</p>
+
+      <h1>Publication Access</h1>
+
+      <p class="access-description">
+        This area is for publication staff and authorized administrators.
+        Choose the access type that applies to you.
+      </p>
+
+      
+<div class="access-options">
+
+  <!-- NFC CARD ACCESS -->
+  <button type="button" id="nfc-card-choice"
+    class="access-option nfc-access-option">
+    <span class="access-icon">⌁</span>
+    <span class="access-option-text">
+      <strong>Tap Your Card for Easy Access</strong>
+      <small>Tap your registered NFC staff card on your phone to verify your access.</small>
+    </span>
+    <span class="access-arrow">→</span>
+  </button>
+
+  <!-- STAFF ACCESS -->
+  <button type="button" id="staff-login-choice"
+    class="access-option">
+    <span class="access-icon">✦</span>
+    <span class="access-option-text">
+      <strong>Staff Access</strong>
+      <small>For publication staff and approved members.</small>
+    </span>
+    <span class="access-arrow">→</span>
+  </button>
+
+  <!-- ADMINISTRATOR ACCESS -->
+  <button type="button" id="admin-login-choice"
+    class="access-option">
+    <span class="access-icon">◇</span>
+    <span class="access-option-text">
+      <strong>Administrator Access</strong>
+      <small>For authorized publication administrators only.</small>
+    </span>
+    <span class="access-arrow">→</span>
+  </button>
+
+</div>
+
+
+      <p class="access-footer">TRUTH CONQUERS ALL</p>
+    </section>
+  </main>
+</body>
+
+<script>
+  const nfcButton = document.getElementById("nfc-card-choice");
+
+  if (nfcButton) {
+    nfcButton.addEventListener("click", () => {
+      alert(
+        "NFC Staff Access\n\n" +
+        "1. Make sure NFC is enabled on your compatible phone.\n" +
+        "2. Tap your registered AU THE STANDARD card on the phone.\n" +
+        "3. Wait for your Staff Access Pass to be verified.\n\n" +
+        "Your card must be active and your staff account approved."
+      );
+    });
+  }
+</script>
+</html>

@@ -1856,159 +1856,71 @@ let nfcVerificationPending = false;
 
       $("refresh-members-button").addEventListener("click", loadMembers);
 
-// NFC SCANNER CODE WILL GO HERE
-function decodeNfcTextRecord(record) {
-  const bytes = new Uint8Array(
-    record.data.buffer,
-    record.data.byteOffset,
-    record.data.byteLength
-  );
+// URL-BASED NFC ACCESS
+// NFC tags open pass.html directly.
+// This dashboard does not scan NDEF text tokens.
 
-  if (bytes.length < 2) return "";
+const nfcScanButton = $("nfc-scan-button");
+const nfcLoginMessage = $("nfc-login-message");
 
-  const languageLength = bytes[0] & 0x3f;
-  const textStart = 1 + languageLength;
+if (nfcScanButton) {
+  nfcScanButton.textContent = "How to Use Your NFC Pass";
 
-  if (textStart > bytes.length) return "";
-
-  return new TextDecoder()
-    .decode(bytes.slice(textStart))
-    .trim();
-}
-
-$("nfc-scan-button").addEventListener("click", async () => {
-  const button = $("nfc-scan-button");
-  const message = $("nfc-login-message");
-
-  pendingNfcToken = null;
-
-  if (!("NDEFReader" in window)) {
+  nfcScanButton.addEventListener("click", () => {
     setMessage(
-      message,
-      "NFC is unavailable. Use Android Chrome over HTTPS or localhost.",
-      "error"
-    );
-    return;
-  }
-
-  let controller;
-
-  try {
-    button.disabled = true;
-
-    setMessage(
-      message,
-      "Hold your NFC card near your phone...",
+      nfcLoginMessage,
+      "Tap your registered NFC card using your Android phone. " +
+      "The card opens its saved pass URL, where verification runs automatically. " +
+      "For dashboard access, sign in with your authorized account.",
       "info"
     );
-
-    const reader = new NDEFReader();
-    controller = new AbortController();
-
-    await reader.scan({ signal: controller.signal });
-
-    reader.addEventListener("reading", event => {
-      try {
-        const record = event.message.records.find(
-          item => item.recordType === "text"
-        );
-
-        if (!record) {
-          setMessage(message, "No text token found on this card.", "error");
-          return;
-        }
-
-        const token = decodeNfcTextRecord(record);
-
-        if (token.length < 32 || token.length > 256) {
-          setMessage(message, "Invalid NFC token.", "error");
-          return;
-        }
-
-        pendingNfcToken = token;
-        controller.abort();
-
-        setMessage(
-          message,
-          "Card read! Enter your email and password, then log in.",
-          "success"
-        );
-      } catch (error) {
-        console.error("NFC read failed:", error);
-        setMessage(message, "Unable to read NFC card.", "error");
-      } finally {
-        button.disabled = false;
-      }
-    }, { signal: controller.signal });
-
-    reader.addEventListener("readingerror", () => {
-      setMessage(
-        message,
-        "Could not read the card. Try tapping it again.",
-        "error"
-      );
-      button.disabled = false;
-    }, { signal: controller.signal });
-
-  } catch (error) {
-    console.error("NFC scan could not start:", error);
-    button.disabled = false;
-
-    setMessage(
-      message,
-      error.name === "NotAllowedError"
-        ? "NFC permission denied. Allow access and try again."
-        : "Unable to start NFC scanning. Check that NFC is enabled.",
-      "error"
-    );
-  }
-});
-
+  });
+}
 // LOGIN AND SESSION
-      loginForm.addEventListener("submit", async event => {
-        event.preventDefault();
-        if (busy) return;
-
-        setBusy(true);
-        setMessage(loginMessage, "Signing in…", "info");
-
-        try {
-          const email = $("login-email").value.trim();
-          const password = $("login-password").value;
-
-          const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-          if (error) throw error;
-
-          $("login-password").value = "";
-          setMessage(loginMessage, "Login successful.", "success");
-        } catch (error) {
-          console.error("Login failed:", error);
-          setMessage(loginMessage, error.message || "Unable to log in.", "error");
-        } finally {
-          setBusy(false);
-        }
-      });
-
-
-loginForm.addEventListener("submit", async event => {
+      // LOGIN AND SESSION — SINGLE SUBMIT HANDLER
+loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+
   if (busy) return;
 
+  const email = $("login-email").value.trim();
+  const password = $("login-password").value;
+
   setBusy(true);
-  nfcVerificationPending = Boolean(pendingNfcToken);
-
-  const cardToken = pendingNfcToken;
-
   setMessage(loginMessage, "Signing in…", "info");
 
   try {
-    const email = $("login-email").value.trim();
-    const password = $("login-password").value;
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
 
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
+    if (error) throw error;
+
+    $("login-password").value = "";
+
+    await initializeDashboard(data.session);
+
+    if (currentUser) {
+      setMessage(
+        loginMessage,
+        "Login successful. Checking your account permissions…",
+        "success"
+      );
+    }
+  } catch (error) {
+    console.error("Login failed:", error);
+
+    setMessage(
+      loginMessage,
+      error.message || "Unable to log in.",
+      "error"
+    );
+  } finally {
+    setBusy(false);
+  }
+});
 
     if (error) throw error;
 
@@ -2139,36 +2051,161 @@ loginForm.addEventListener("submit", async event => {
     })();
   </script>
   
-<section id="nfc-registration">
-  <h2>Admin NFC Card Registration</h2>
-  <p>Register a new NFC card for your approved admin account.</p>
+<section id="nfc-registration" class="panel">
+  <h2>Admin NFC Pass Registration</h2>
+  <p class="muted">
+    Create a URL-based pass for your authorized account.
+    Write the generated URL to your NFC tag.
+  </p>
 
-  <label for="nfc-card-label">Card name</label>
-  <input
-    id="nfc-card-label"
-    type="text"
-    value="THE STANDARD Admin NFC Card"
-    maxlength="80"
-  />
+  <div class="field">
+    <label for="nfc-card-label">Card name</label>
+    <input
+      id="nfc-card-label"
+      type="text"
+      value="THE STANDARD Admin NFC Pass"
+      maxlength="80"
+    >
+  </div>
 
-  <button id="register-nfc-button" type="button">
-    Register New NFC Card
-  </button>
+  <div class="button-row">
+    <button id="register-nfc-button" class="btn" type="button">
+      Register NFC Pass
+    </button>
+  </div>
 
-  <p id="nfc-registration-message" role="status"></p>
+  <div
+    id="nfc-registration-message"
+    class="status-message"
+    role="status"
+    aria-live="polite"
+  ></div>
 
-  <label for="nfc-token">New card token</label>
-  <textarea
-    id="nfc-token"
-    rows="3"
-    readonly
-    placeholder="Your new token will appear here."
-  ></textarea>
+  <div class="field">
+    <label for="nfc-pass-url">NFC pass URL</label>
+    <input
+      id="nfc-pass-url"
+      type="url"
+      readonly
+      placeholder="Your pass URL will appear here."
+    >
+    <small>
+      Write this URL to the NFC tag using your Android phone.
+      The pass must be active before verification succeeds.
+    </small>
+  </div>
 
-  <button id="copy-nfc-token" type="button">
-    Copy Token
-  </button>
+  <div class="button-row">
+    <button id="copy-nfc-url" class="btn btn-light" type="button">
+      Copy Pass URL
+    </button>
+    <a
+      id="open-nfc-pass"
+      class="btn btn-light"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+      hidden
+    >Open Pass ↗</a>
+  </div>
 </section>
+
+<script>
+(() => {
+  const registerButton = document.getElementById("register-nfc-button");
+  const copyButton = document.getElementById("copy-nfc-url");
+  const urlField = document.getElementById("nfc-pass-url");
+  const message = document.getElementById("nfc-registration-message");
+  const openButton = document.getElementById("open-nfc-pass");
+  const labelField = document.getElementById("nfc-card-label");
+
+  function showMessage(text, type = "info") {
+    message.textContent = text;
+    message.className = "status-message";
+    if (text) message.classList.add("status-" + type);
+  }
+
+  registerButton.addEventListener("click", async () => {
+    if (!supabaseClient) {
+      showMessage("Supabase is unavailable.", "error");
+      return;
+    }
+
+    const cardLabel = labelField.value.trim();
+
+    if (!cardLabel) {
+      showMessage("Enter a card name first.", "error");
+      return;
+    }
+
+    registerButton.disabled = true;
+    urlField.value = "";
+    openButton.hidden = true;
+    showMessage("Registering NFC pass…");
+
+    try {
+      const { data, error } =
+        await supabaseClient.functions.invoke("nfc-register", {
+          body: { card_label: cardLabel }
+        });
+
+      if (error) throw error;
+
+      if (!data?.success || !data?.pass_url) {
+        throw new Error(
+          data?.error ||
+          "The registration function did not return a pass URL."
+        );
+      }
+
+      const passUrl = new URL(data.pass_url);
+
+      if (
+        passUrl.protocol !== "https:" ||
+        passUrl.hostname !== "loricajhonmichael040507-eng.github.io" ||
+        !passUrl.pathname.endsWith("/au-the-standard/pass.html")
+      ) {
+        throw new Error("The server returned an unexpected pass URL.");
+      }
+
+      urlField.value = passUrl.href;
+      openButton.href = passUrl.href;
+      openButton.hidden = false;
+
+      showMessage(
+        data.status === "active"
+          ? "Pass registered and active. Copy the URL to your NFC tag."
+          : "Pass registered but pending activation. Activate it before testing.",
+        data.status === "active" ? "success" : "info"
+      );
+    } catch (error) {
+      console.error("NFC registration failed:", error);
+      showMessage(
+        "Registration failed: " + (error.message || "Unknown error."),
+        "error"
+      );
+    } finally {
+      registerButton.disabled = false;
+    }
+  });
+
+  copyButton.addEventListener("click", async () => {
+    if (!urlField.value) {
+      showMessage("Register a pass first.", "error");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(urlField.value);
+      showMessage("Pass URL copied. Write it to your NFC tag.", "success");
+    } catch {
+      urlField.focus();
+      urlField.select();
+      showMessage("URL selected. Copy it manually.", "info");
+    }
+  });
+})();
+</script>
 
 <script>
   const registerButton = document.getElementById("register-nfc-button");

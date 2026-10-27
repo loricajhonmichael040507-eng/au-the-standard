@@ -783,3 +783,85 @@ async function initializeHomepage() {
 }
 
 initializeHomepage();
+
+
+
+/* AU THE STANDARD — INTRO TO ACCOUNT ACCESS */
+(() => {
+  const intro = document.getElementById("cinematic-intro");
+  const accessScreen = document.getElementById("account-access-screen");
+
+  if (!intro || !accessScreen) return;
+
+  let finished = false;
+
+  function finishIntro() {
+    if (finished) return;
+    finished = true;
+
+    intro.classList.add("intro-exit");
+
+    window.setTimeout(() => {
+      intro.remove();
+      accessScreen.hidden = false;
+      window.scrollTo(0, 0);
+    }, 1100);
+  }
+
+  intro.addEventListener("click", finishIntro);
+
+  intro.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      finishIntro();
+    }
+  });
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    finishIntro();
+  } else {
+    window.setTimeout(finishIntro, 6500);
+  }
+})();
+
+/* ACCOUNT ACCESS — VISITOR */
+(() => {
+  const accessScreen = document.getElementById("account-access-screen");
+  const visitorButton = document.getElementById("visitor-access");
+
+  if (!accessScreen || !visitorButton) return;
+
+  function showHomepage() {
+    accessScreen.hidden = true;
+    document.body.classList.remove("access-selection-active");
+    window.scrollTo(0, 0);
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!accessScreen.hidden) {
+      document.body.classList.add("access-selection-active");
+    }
+  });
+
+  observer.observe(accessScreen, {
+    attributes: true,
+    attributeFilter: ["hidden"]
+  });
+
+  visitorButton.addEventListener("click", showHomepage);
+
+  if (!accessScreen.hidden) {
+    document.body.classList.add("access-selection-active");
+  }
+})();
+
+/* ACCOUNT ACCESS — OPEN STAFF/ADMIN PAGE */
+(() => {
+  const staffButton = document.getElementById("staff-access");
+
+  if (!staffButton) return;
+
+  staffButton.addEventListener("click", () => {
+    window.location.href = "staff-access.html";
+  });
+})();
