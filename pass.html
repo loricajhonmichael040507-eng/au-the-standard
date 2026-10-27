@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#052f30">
+  <title>Staff Pass | AU THE STANDARD</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      background: #052f30;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .pass {
+      width: 100%;
+      max-width: 420px;
+      padding: 30px;
+      border: 1px solid rgba(241, 216, 91, 0.45);
+      border-radius: 22px;
+      background: linear-gradient(145deg, #087c78, #052f30 75%);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .brand {
+      color: #f1d85b;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    h1 {
+      margin: 12px 0 5px;
+      font-size: 27px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: #d5e8e5;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+    }
+
+    .divider {
+      height: 1px;
+      margin: 25px 0;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .label {
+      margin-top: 18px;
+      color: #c5e2df;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .value {
+      margin-top: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .status {
+      margin-top: 25px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(241, 216, 91, 0.12);
+      color: #f1d85b;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .status.invalid {
+      background: rgba(255, 100, 100, 0.12);
+      color: #ffaaaa;
+    }
+
+    .note {
+      margin-top: 22px;
+      color: #c5e2df;
+      font-size: 11px;
+      line-height: 1.7;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="pass">
+    <div class="brand">AU THE STANDARD</div>
+    <h1>Staff Access Pass</h1>
+    <p class="subtitle">JOSE RIZAL CAMPUS</p>
+
+    <div class="divider"></div>
+
+    <div class="label">Staff Name</div>
+    <div class="value" id="staffName">Verifying pass...</div>
+
+    <div class="label">Staff ID</div>
+    <div class="value" id="staffId">—</div>
+
+    <div class="status" id="status" role="status" aria-live="polite">
+      Checking pass status...
+    </div>
+
+    <p class="note">
+      Truth. Integrity. The Student Voice.<br>
+      Official staff pass verification
+    </p>
+  </main>
+
+  <script>
+    const SUPABASE_URL = "https://gxihhayyyxiauoqrkokp.supabase.co";
+
+    // Use your existing public publishable key only.
+    // Never put the service-role key in this file.
+    const SUPABASE_ANON_KEY = "sb_publishable_Q6p-7zDpsKmchrRiCA7TBg_JOZajsxX";
+
+    const statusEl = document.getElementById("status");
+    const staffNameEl = document.getElementById("staffName");
+    const staffIdEl = document.getElementById("staffId");
+
+    const params = new URLSearchParams(window.location.search);
+    const passId = params.get("id");
+
+    function showInvalid(message) {
+      staffNameEl.textContent = "Unverified";
+      staffIdEl.textContent = "—";
+      statusEl.textContent = message;
+      statusEl.classList.add("invalid");
+    }
+
+    async function verifyPass() {
+      if (!passId) {
+        showInvalid("No pass ID provided.");
+        return;
+      }
+
+      if (SUPABASE_ANON_KEY === "YOUR_EXISTING_PUBLISHABLE_KEY") {
+        showInvalid("Verification is not configured.");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/functions/v1/verify-public-pass`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "apikey": SUPABASE_ANON_KEY
+            },
+            body: JSON.stringify({ pass_id: passId })
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.valid) {
+          showInvalid(result.message || "Pass verification failed.");
+          return;
+        }
+
+        if (!result.staff_name || !result.staff_id) {
+          showInvalid("Staff information is incomplete.");
+          return;
+        }
+
+        staffNameEl.textContent = result.staff_name;
+        staffIdEl.textContent = result.staff_id;
+        statusEl.classList.remove("invalid");
+        statusEl.textContent = "✓ " + result.message;
+
+      } catch (error) {
+        console.error("Pass verification error:", error);
+        showInvalid("Unable to verify. Please try again.");
+      }
+    }
+
+    verifyPass();
+  </script>
+</body>
+</html>
